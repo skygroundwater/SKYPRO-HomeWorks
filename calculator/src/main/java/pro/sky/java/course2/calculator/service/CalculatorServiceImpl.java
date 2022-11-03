@@ -28,7 +28,7 @@ public class CalculatorServiceImpl implements CalculatorService {
     public String divide(@RequestParam String num1, @RequestParam String num2){
             int newNum1 = Integer.parseInt(num1);
             int newNum2 = Integer.parseInt(num2);
-            if(newNum2 == 0) return "На ноль делить нельзя";
+            if(newNum2 == 0) return "Unfortunately you can't divide by zero.";
             return num1 + " + " + num2 + " = " + newNum1 / newNum2;
     }
 }
