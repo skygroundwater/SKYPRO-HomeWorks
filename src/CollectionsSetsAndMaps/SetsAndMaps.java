@@ -34,7 +34,7 @@ public class SetsAndMaps {
     public static void findDoublesOfWords(ArrayList<String> list) {
         Map<String, Integer> frequency = list.stream().collect(Collectors.toMap(e -> e , e -> 1, Integer::sum));
         frequency.forEach((k, v) -> System.out.println("Word " + k + ", Doubles = " + v));
-        }
+    }
 
     public static void findDoublesOfWords2(ArrayList<String> list){
         Map<String, Integer> letters = new HashMap<>();
@@ -51,9 +51,9 @@ public class SetsAndMaps {
         }
     }
 
-        public static void main (String[]args){
-            ArrayList<Integer> nums = new ArrayList<>(List.of(7, 1, 2, 8, 8, 4, 4, 9, 9, 5, 5, 6, 7));
-            ArrayList<String> instruments = new ArrayList<>(List.of("axe", "axe", "hammer", "scraper", "brush", "brush", "drill", "drill", "scotch", "saw", "rubber"));
+    public static void main (String[]args){
+        ArrayList<Integer> nums = new ArrayList<>(List.of(7, 1, 2, 8, 8, 4, 4, 9, 9, 5, 5, 6, 7));
+        ArrayList<String> instruments = new ArrayList<>(List.of("axe", "axe", "hammer", "scraper", "brush", "brush", "drill", "drill", "scotch", "saw", "rubber"));
 
-        }
     }
+}
