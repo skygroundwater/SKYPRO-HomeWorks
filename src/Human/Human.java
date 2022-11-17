@@ -1,15 +1,39 @@
 package Human;
 public class Human {
-    private final int yearOfBirth;
-    private final String name;
-    private final String town;
-    private final String jobTitle;
+    private int yearOfBirth;
+    private  String name;
+    private String town;
+    private String jobTitle;
     private static final String noInfo = " <информация не указана>";
     public Human(String name, int yearOfBirth, String town, String jobTitle){
         if(name == null || name.isEmpty()) this.name = noInfo; else this.name  = name;
         if(yearOfBirth>=0) this.yearOfBirth = yearOfBirth; else this.yearOfBirth = Math.abs(yearOfBirth);
         if(town == null || town.isEmpty()) this.town = noInfo; else this.town = town;
-        if(jobTitle == null) this.jobTitle = noInfo; else this.jobTitle = jobTitle;
+        if(jobTitle == null || jobTitle.isEmpty()) this.jobTitle = "<сейчас нигде не работает>"; else this.jobTitle = jobTitle;
+    }
+    public int getYearOfBirth() {
+        return yearOfBirth;
+    }
+    public String getJobTitle() {
+        return jobTitle;
+    }
+    public String getName() {
+        return name;
+    }
+    public String getTown() {
+        return town;
+    }
+    public void setJobTitle(String jobTitle) {
+        if(jobTitle == null) this.jobTitle = "<сейчас нигде не работает>"; else this.jobTitle = jobTitle;
+    }
+    public void setName(String name) {
+        if(name == null || name.isEmpty()) this.name = noInfo; else this.name  = name;
+    }
+    public void setTown(String town) {
+        if(town == null || town.isEmpty()) this.town = noInfo; else this.town = town;
+    }
+    public void setYearOfBirth(int yearOfBirth) {
+        if(yearOfBirth>=0) this.yearOfBirth = yearOfBirth; else this.yearOfBirth = Math.abs(yearOfBirth);
     }
     @Override
     public String toString(){
