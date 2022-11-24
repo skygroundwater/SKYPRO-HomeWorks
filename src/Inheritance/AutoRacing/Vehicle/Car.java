@@ -11,7 +11,7 @@ public class Car<B extends DriverB & Moving> extends Transport {
     }
 
     public void participate(B driver) {
-        System.out.println(driver.getName() + driver.getDriverCard() + " управляет " + this);
+        System.out.println("Водитель " + driver.getName() + " управляет " + getBrand() + " и будет участвовать в соревнованиях");
     }
     @Override
     public void startTrip() {

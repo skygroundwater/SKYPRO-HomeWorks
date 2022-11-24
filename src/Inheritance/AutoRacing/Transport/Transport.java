@@ -12,7 +12,7 @@ abstract public class Transport implements Competing {
     public Transport(String brand, String model, double engineVolume){
         if(brand == null || brand.isEmpty()) this.brand = noInfo; else this.brand = brand;
         if(model == null || model.isEmpty()) this.model = noInfo; else this.model = model;
-        this.engineVolume = Math.max(engineVolume, 10.0);
+        this.engineVolume = Math.abs(engineVolume);
     }
 
 

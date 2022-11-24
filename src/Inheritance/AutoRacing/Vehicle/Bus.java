@@ -9,7 +9,7 @@ public class Bus<D extends DriverD & Moving> extends Transport {
     }
 
     public void participate(D driver) {
-        System.out.println(driver.getName() + driver.getDriverCard() + " управляет " + this);
+        System.out.println("Водитель " + driver.getName() + " управляет " + getBrand() + " и будет участвовать в соревнованиях");
     }
 
     @Override

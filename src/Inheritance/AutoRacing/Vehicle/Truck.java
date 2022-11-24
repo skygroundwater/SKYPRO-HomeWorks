@@ -9,7 +9,7 @@ public class Truck<C extends DriverC & Moving> extends Transport {
         super(brand, model, engineVolume);
     }
     public void participate(C driver) {
-        System.out.println(driver.getName() + driver.getDriverCard() + " управляет " + this);
+        System.out.println("Водитель " + driver.getName() + " управляет " + getBrand() + " и будет участвовать в соревнованиях");
     }
     @Override
     public void startTrip() {
