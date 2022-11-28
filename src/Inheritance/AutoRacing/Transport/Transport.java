@@ -14,8 +14,7 @@ abstract public class Transport implements Competing {
         if(model == null || model.isEmpty()) this.model = noInfo; else this.model = model;
         this.engineVolume = Math.abs(engineVolume);
     }
-
-
+    abstract public String printType();
     private String getNoInfo(){
         return noInfo;
     }
@@ -45,7 +44,7 @@ abstract public class Transport implements Competing {
     }
     @Override
     public String toString(){
-        return brand + " модель " + model + " объем двигателя " +engineVolume + " л.";
+        return brand + " модель " + model + " объем двигателя " +engineVolume + " л. ";
     }
     @Override
     public boolean equals(Object o) {
