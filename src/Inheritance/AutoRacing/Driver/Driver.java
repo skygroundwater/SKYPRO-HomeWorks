@@ -5,7 +5,7 @@ public abstract class Driver{
     private double experience;
     public Driver(String name, double experience){
     if(name == null || name.isEmpty()) this.name = " Петрович"; else this.name = name;
-    this.driverCard = null;
+    this.driverCard = "Тип прав не указан";
     this.experience = Math.max(experience,0.5);
     }
     public String getName() {
@@ -18,7 +18,12 @@ public abstract class Driver{
         return driverCard;
     }
     public void setDriverCard(String driverCard) {
-        this.driverCard = driverCard;
+        if(driverCard.isEmpty()){
+            throw new RuntimeException("Необходимо указать тип прав");
+        } else {
+            this.driverCard = driverCard;
+        }
+
     }
     public double getExperience() {
         return experience;

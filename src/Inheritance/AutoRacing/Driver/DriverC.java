@@ -1,9 +1,9 @@
 package Inheritance.AutoRacing.Driver;
 
 public class DriverC extends Driver implements Moving{
-    public DriverC(String name, double experience) {
+    public DriverC(String name, double experience, String driverCard) {
         super(name, experience);
-        this.setDriverCard(" права категории С ");
+        this.setDriverCard(driverCard);
     }
     public void startDriving(){
         System.out.println(getName() + " поехал");

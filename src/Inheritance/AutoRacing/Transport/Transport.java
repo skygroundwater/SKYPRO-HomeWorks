@@ -15,6 +15,7 @@ abstract public class Transport implements Competing {
         this.engineVolume = Math.abs(engineVolume);
     }
     abstract public String printType();
+    abstract public boolean passTechnicalInspection();
     private String getNoInfo(){
         return noInfo;
     }

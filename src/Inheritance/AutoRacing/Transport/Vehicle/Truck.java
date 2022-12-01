@@ -45,13 +45,22 @@ public class Truck<C extends DriverC & Moving> extends Transport {
         return loadCapacity;
     }
     public void setLoadCapacity(float loadCapacity) {
-        if(loadCapacity <= LoadCapacity.N1.getMaxCapacity()) this.loadCapacity = LoadCapacity.N1;
+        if(loadCapacity<0) this.loadCapacity = null;
+        else if(loadCapacity <= LoadCapacity.N1.getMaxCapacity()) this.loadCapacity = LoadCapacity.N1;
         else if (loadCapacity >= LoadCapacity.N2.getMinCapacity() && loadCapacity <= LoadCapacity.N2.getMaxCapacity()) this.loadCapacity = LoadCapacity.N2;
         else if(loadCapacity >= LoadCapacity.N3.getMinCapacity()) this.loadCapacity = LoadCapacity.N3;
-        else this.loadCapacity = null;
     }
     public void participate(C driver) {
         System.out.println("Водитель " + driver.getName() + " управляет " + getBrand() + " и будет участвовать в соревнованиях");
+    }
+    @Override
+    public boolean passTechnicalInspection(){
+        if(getLoadCapacity()== null){
+            return false;
+        } else {
+            System.out.println("Грузовик " + getBrand() + " прошёл диагностику");
+            return true;
+        }
     }
     @Override
     public String printType() {

@@ -9,7 +9,7 @@ public class Car<B extends DriverB & Moving> extends Transport {
     public enum CarBody {
         HATCHBACK("Хетчбек"), SEDAN("Седан"), COUPE("Купе"),
         STATION_WAGON("Универсал"), SUV("Внедорожник"),
-        CROSSOVER("Кроссовер"), PICKUP("Пикап"), VAN("Фургон"), MINIVAN("Минивэн");
+        CROSSOVER("Кроссовер"), PICKUP("Пикап"), VAN("Фургон"), MINIVAN("Минивэн"), ANY("неуказан тип кузова");
         private final String name;
         public String getName(){
             return name;
@@ -33,8 +33,9 @@ public class Car<B extends DriverB & Moving> extends Transport {
     }
 
     public void setCarBody(String carBody) {
-        if(carBody == null || carBody.isEmpty()) this.carBody = null;
+        if(carBody == null || carBody.isEmpty()) this.carBody = CarBody.ANY;
         for (int i = 0; i < CarBody.values().length; i++) {
+            assert carBody != null;
             if(carBody.equals(CarBody.values()[i].getName())) this.carBody = CarBody.values()[i];
         }
     }
@@ -46,6 +47,15 @@ public class Car<B extends DriverB & Moving> extends Transport {
     public String printType() {
         if(carBody != null) return carBody.toString();
         else return "Данных по транспортному средству не достаточно";
+    }
+    @Override
+    public boolean passTechnicalInspection(){
+            if(getCarBody().equals(CarBody.ANY)){
+                return false;
+            } else {
+                System.out.println("Автомобиль " + getBrand() + " прошел диагностику");
+                return true;
+            }
     }
     @Override
     public void startTrip() {

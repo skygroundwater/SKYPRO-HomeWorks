@@ -65,6 +65,11 @@ public class Bus<D extends DriverD & Moving> extends Transport {
         else return "Данных по транспортному средству не достаточно";
     }
     @Override
+    public boolean passTechnicalInspection(){
+        System.out.println("Автобус " + getBrand() + " в диагностике не нуждается");
+        return false;
+    }
+    @Override
     public void startTrip() {
         System.out.println("Автобус");
         super.startTrip();
