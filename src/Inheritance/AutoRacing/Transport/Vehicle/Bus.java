@@ -1,8 +1,14 @@
 package Inheritance.AutoRacing.Transport.Vehicle;
-import Inheritance.AutoRacing.Driver.DriverD;
+import Inheritance.AutoRacing.Driver.Driver;
 import Inheritance.AutoRacing.Driver.Moving;
+import Inheritance.AutoRacing.Mechanic.Mechanic;
+import Inheritance.AutoRacing.Sponsors.Sponsor;
 import Inheritance.AutoRacing.Transport.Transport;
-public class Bus<D extends DriverD & Moving> extends Transport {
+
+import java.util.ArrayList;
+import java.util.Objects;
+
+public class Bus extends Transport {
     public enum SeatCapacity {
         SMALLEST(10), SMALL(11, 25), MIDDLE(40, 50), BIG(60, 80), BIGGEST(100, 120);
         private Integer minNumberOfSeats;
@@ -35,10 +41,74 @@ public class Bus<D extends DriverD & Moving> extends Transport {
             else return "Вместимость до: " + maxNumberOfSeats;
         }
     }
+    static class DriverD extends Driver implements Moving{
+        public DriverD(String name, double experience, String driverCard) {
+            super(name, experience);
+            this.setDriverCard(driverCard);
+        }
+        public String startDriving(){
+            return getName() + " начал гонку";
+        }
+        public String stopDriving(){
+            return getName() + " закончил гонку";
+        }
+        public String refill(){
+            return getName() + " заправляется";
+        }
+        @Override
+        public String toString() {
+            return super.toString() + " имеет " + getDriverCard();
+        }
+        @Override
+        public boolean equals(Object o) {
+            return super.equals(o);
+        }
+        @Override
+        public int hashCode() {
+            return super.hashCode();
+        }
+    }
     private SeatCapacity seatCapacity;
-    public Bus(String brand, String model, double engineVolume, int seatCapacity) {
+    private final DriverD driver;
+    private final ArrayList<Sponsor> sponsors;
+    private final ArrayList<Mechanic<? super Bus>> mechanics;
+    public Bus(String brand, String model, double engineVolume, int seatCapacity, String driverName, double experienceDriver) {
         super(brand, model, engineVolume);
         setSeatCapacity(seatCapacity);
+        this.driver = new DriverD(driverName, experienceDriver, " права категории D ");
+        this.sponsors = new ArrayList<>();
+        this.mechanics = new ArrayList<>();
+    }
+    public void addSponsor(Sponsor sponsor, Double sum){
+        Sponsor sponsor1 = new Sponsor(sponsor.getName(), sponsor.getType());
+        try {
+            sponsor1.letsSponsoring(sum);
+        }catch (RuntimeException e){
+            return;
+        }
+        sponsor.addVehicle(this);
+        this.sponsors.add(sponsor1);
+    }
+    public void showAllSponsors(){
+        for(Sponsor sponsor: sponsors){
+            System.out.println(sponsor + " проспонсировал заезд данного " + getBrand() + " на " + sponsor.getSum() + " долларов");
+        }
+    }
+    public void addMechanic(Mechanic<? super Bus> mechanic){
+        Mechanic<Bus> mechanic1 = new Mechanic<>(mechanic.getFirstName(), mechanic.getLastName(), mechanic.getCompany());
+        mechanics.add(mechanic1);
+        mechanic.takeVehicle(this);
+    }
+    public void showAllMechanics(){
+        for(Mechanic<? super Bus> mechanic: mechanics){
+            System.out.println(mechanic);
+        }
+    }
+    public ArrayList<Mechanic<? super Bus>> getMechanics(){
+        return mechanics;
+    }
+    public DriverD getDriver() {
+        return driver;
     }
     public SeatCapacity getSeatCapacity() {
         return seatCapacity;
@@ -51,45 +121,53 @@ public class Bus<D extends DriverD & Moving> extends Transport {
         else if (seatCapacity >= SeatCapacity.BIGGEST.getMinNumberOfSeats() && seatCapacity <= SeatCapacity.BIGGEST.getMaxNumberOfSeats()) this.seatCapacity = SeatCapacity.BIGGEST;
         else this.seatCapacity = null;
     }
-    @Override
-    public String toString() {
-        if(seatCapacity != null) return super.toString() + seatCapacity;
-        else return super.toString();
-    }
-    public void participate(D driver) {
-        System.out.println("Водитель " + driver.getName() + " управляет " + getBrand() + " и будет участвовать в соревнованиях");
+    public String participate() {
+        return "Водитель " + driver.getName() + " управляет " + getBrand() + " и будет участвовать в соревнованиях";
     }
     @Override
     public String printType() {
         if(seatCapacity != null) return seatCapacity.toString();
         else return "Данных по транспортному средству не достаточно";
     }
-    @Override
-    public boolean passTechnicalInspection(){
-        System.out.println("Автобус " + getBrand() + " в диагностике не нуждается");
-        return false;
-    }
-    @Override
-    public void startTrip() {
-        System.out.println("Автобус");
-        super.startTrip();
-    }
-    @Override
-    public void stopTrip() {
-        System.out.println("Автобус");
-        super.stopTrip();
-    }
-    @Override
-    public void pitStop() {
-        System.out.println(this + " остановился для замены шин");
-    }
-    @Override
-    public void bestLapTime() {
-        System.out.println(this + " показал лучшее время круга");
-    }
 
+    public String passTechnicalMaintenance(){
+        return "Автобус " + getBrand() + " в диагностике не нуждается";
+    }
     @Override
-    public void maxSpeed() {
-        System.out.println(this + " показал лучшую скорость");
+    public String startTrip() {
+        return "Автобус " + super.startTrip() + " под управлением водителя " + driver.startDriving();
+    }
+    @Override
+    public String stopTrip() {
+        return "Автобус " + super.stopTrip() + " под управлением водителя " + driver.stopDriving();
+    }
+    @Override
+    public String pitStop() {
+        return this + " остановился для замены шин. " + driver.refill();
+    }
+    @Override
+    public String bestLapTime() {
+        return this + " под управлением водителя " + driver.getName() + " показал лучшее время круга";
+    }
+    @Override
+    public String maxSpeed() {
+        return this + " под управлением водителя " + driver.getName() + " показал лучшую скорость";
+    }
+    @Override
+    public String toString() {
+        if(seatCapacity != null) return super.toString() + seatCapacity;
+        else return super.toString();
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Bus bus = (Bus) o;
+        return seatCapacity == bus.seatCapacity && Objects.equals(driver, bus.driver);
+    }
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), seatCapacity, driver);
     }
 }

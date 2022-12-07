@@ -1,11 +1,13 @@
 package Inheritance.AutoRacing.Transport.Vehicle;
-import Inheritance.AutoRacing.Driver.DriverB;
+import Inheritance.AutoRacing.Driver.Driver;
 import Inheritance.AutoRacing.Driver.Moving;
+import Inheritance.AutoRacing.Mechanic.Mechanic;
+import Inheritance.AutoRacing.Sponsors.Sponsor;
 import Inheritance.AutoRacing.Transport.Transport;
 
+import java.util.ArrayList;
 import java.util.Objects;
-public class Car<B extends DriverB & Moving> extends Transport {
-
+public class Car extends Transport {
     public enum CarBody {
         HATCHBACK("Хетчбек"), SEDAN("Седан"), COUPE("Купе"),
         STATION_WAGON("Универсал"), SUV("Внедорожник"),
@@ -17,21 +19,83 @@ public class Car<B extends DriverB & Moving> extends Transport {
         CarBody(String name){
             this.name = name;
         }
-
         @Override
         public String toString() {
             return "Тип кузова: " + name;
         }
     }
+    static class DriverB extends Driver implements Moving{
+        public DriverB(String name, double experience, String driverCard) {
+            super(name, experience);
+            setDriverCard(driverCard);
+        }
+        public String startDriving(){
+            return getName() + " начал гонку";
+        }
+        public String stopDriving(){
+            return getName() + " закончил гонку";
+        }
+        public String refill(){
+            return getName() + " заправляется";
+        }
+        @Override
+        public String toString() {
+            return super.toString() + " имеет " + getDriverCard();
+        }
+        @Override
+        public boolean equals(Object o) {
+            return super.equals(o);
+        }
+        @Override
+        public int hashCode() {
+            return super.hashCode();
+        }
+    }
     private CarBody carBody;
-    public Car(String brand, String model, double engineVolume, String carBody){
+    private final DriverB driver;
+    private final ArrayList<Sponsor> sponsors;
+    private final ArrayList<Mechanic<? super Car>> mechanics;
+    public Car(String brand, String model, double engineVolume, String carBody, String driverName, double experienceDriver){
         super(brand, model, engineVolume);
+        this.driver = new DriverB(driverName, experienceDriver, " права категории В ");
         setCarBody(carBody);
+        this.sponsors = new ArrayList<>();
+        this.mechanics = new ArrayList<>();
+    }
+    public void addSponsor(Sponsor sponsor, Double sum){
+        Sponsor sponsor1 = new Sponsor(sponsor.getName(), sponsor.getType());
+        try {
+            sponsor1.letsSponsoring(sum);
+        }catch (RuntimeException e){
+            return;
+        }
+        sponsor.addVehicle(this);
+        this.sponsors.add(sponsor1);
+    }
+    public void showAllSponsors(){
+        for(Sponsor sponsor: sponsors){
+            System.out.println(sponsor + " проспонсировал заезд данного " + getBrand() + " на " + sponsor.getSum() + " долларов");
+        }
+    }
+    public void addMechanic(Mechanic<? super Car> mechanic){
+        Mechanic<Car> mechanic1 = new Mechanic<>(mechanic.getFirstName(), mechanic.getLastName(), mechanic.getCompany());
+        mechanics.add(mechanic1);
+        mechanic.takeVehicle(this);
+    }
+    public void showAllMechanics(){
+        for(Mechanic<? super Car> mechanic: mechanics){
+            System.out.println(mechanic);
+        }
+    }
+    public ArrayList<Mechanic<? super Car>> getMechanics(){
+        return mechanics;
+    }
+    public DriverB getDriver() {
+        return driver;
     }
     public CarBody getCarBody() {
         return carBody;
     }
-
     public void setCarBody(String carBody) {
         if(carBody == null || carBody.isEmpty()) this.carBody = CarBody.ANY;
         for (int i = 0; i < CarBody.values().length; i++) {
@@ -39,9 +103,8 @@ public class Car<B extends DriverB & Moving> extends Transport {
             if(carBody.equals(CarBody.values()[i].getName())) this.carBody = CarBody.values()[i];
         }
     }
-
-    public void participate(B driver) {
-        System.out.println("Водитель " + driver.getName() + " управляет " + getBrand() + " и будет участвовать в соревнованиях");
+    public String participate() {
+        return "Водитель " + driver.getName() + " управляет " + getBrand() + " и будет участвовать в соревнованиях";
     }
     @Override
     public String printType() {
@@ -49,34 +112,24 @@ public class Car<B extends DriverB & Moving> extends Transport {
         else return "Данных по транспортному средству не достаточно";
     }
     @Override
-    public boolean passTechnicalInspection(){
-            if(getCarBody().equals(CarBody.ANY)){
-                return false;
-            } else {
-                System.out.println("Автомобиль " + getBrand() + " прошел диагностику");
-                return true;
-            }
+    public String startTrip() {
+        return "Автомобиль " + super.startTrip() + " под управлением водителя " + driver.startDriving();
     }
     @Override
-    public void startTrip() {
-        super.startTrip();
+    public String stopTrip() {
+        return "Автомобиль " + super.stopTrip() + " под управлением водителя " + driver.stopDriving();
     }
     @Override
-    public void stopTrip() {
-        System.out.println("Автомобиль");
-        super.stopTrip();
+    public String pitStop() {
+        return this + " остановился для замены шин. " + driver.refill();
     }
     @Override
-    public void pitStop() {
-        System.out.println(this + " остановился для замены шин");
+    public String bestLapTime() {
+        return this + " под управлением водителя " + driver.getName() + " показал лучшее время круга";
     }
     @Override
-    public void bestLapTime() {
-        System.out.println(this + " показал лучшее время круга");
-    }
-    @Override
-    public void maxSpeed() {
-        System.out.println(this + " показал лучшую скорость");
+    public String maxSpeed() {
+        return this + " под управлением водителя " + driver.getName() + " показал лучшую скорость";
     }
     @Override
     public String toString(){

@@ -2,7 +2,10 @@ package Inheritance.AutoRacing.Transport;
 import Inheritance.AutoRacing.Competing;
 import Inheritance.AutoRacing.Driver.Driver;
 import Inheritance.AutoRacing.Driver.Moving;
+import Inheritance.AutoRacing.Mechanic.Mechanic;
+import Inheritance.AutoRacing.Sponsors.Sponsor;
 
+import java.util.ArrayList;
 import java.util.Objects;
 abstract public class Transport implements Competing {
     private String brand;
@@ -10,12 +13,11 @@ abstract public class Transport implements Competing {
     private double engineVolume;
     private static final String noInfo = "Информация не указана";
     public Transport(String brand, String model, double engineVolume){
-        if(brand == null || brand.isEmpty()) this.brand = noInfo; else this.brand = brand;
-        if(model == null || model.isEmpty()) this.model = noInfo; else this.model = model;
-        this.engineVolume = Math.abs(engineVolume);
+        setBrand(brand);
+        setModel(model);
+        setEngineVolume(engineVolume);
     }
     abstract public String printType();
-    abstract public boolean passTechnicalInspection();
     private String getNoInfo(){
         return noInfo;
     }
@@ -31,17 +33,18 @@ abstract public class Transport implements Competing {
     public void setModel(String model) {
         if(model == null || model.isEmpty()) this.model = noInfo; else this.model = model;
     }
+    public abstract Driver getDriver();
     public double getEngineVolume() {
         return engineVolume;
     }
     public void setEngineVolume(double engineVolume) {
         this.engineVolume = Math.max(engineVolume, 10.0);
     }
-    public void startTrip(){
-        System.out.println(getBrand() + " " + getModel() + " начал движение");
+    public String startTrip(){
+        return getBrand() + " " + getModel();
     }
-    public void stopTrip(){
-        System.out.println(getBrand() + " " + getModel() + " закончил движение");
+    public String stopTrip(){
+        return getBrand() + " " + getModel();
     }
     @Override
     public String toString(){
