@@ -1,66 +1,115 @@
 package Inheritance.AutoRacing.SuperMarket;
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.Queue;
+import Inheritance.AutoRacing.SuperMarket.Products.Product;
+
+import java.util.*;
 
 public class SuperMarket {
-    private static final Queue<String> buyers1 = new ArrayDeque<>(5);
-    private static final Queue<String> buyers2 = new ArrayDeque<>(5);
-    private static final Queue<String> buyers3 = new ArrayDeque<>(5);
-    public static void add1(String buyer){
-        try {
-            if (buyers1.size() > 4 && buyers2.size() > 4 && buyers3.size() > 4)
-                throw new RuntimeException();
-        }catch (RuntimeException e){
-            System.out.println("Место в магазине закончилось. Подождите на улице");
-            return;
+    public static class FoodBasket{
+        private final HashSet<Product> products;
+        protected FoodBasket(){
+            this.products = new HashSet<>();
         }
-        if(buyers3.size() >= buyers1.size() && buyers2.size() >= buyers1.size()) buyers1.offer(buyer);
-        else if(buyers1.size() >= buyers2.size() && buyers3.size() >= buyers2.size()) buyers2.offer(buyer);
-        else buyers3.offer(buyer);
+        public void addNewProduct(String name, Double weight, Double cost){
+            Product product = new Product(name, weight, cost);
+            try {
+                if (products.contains(product)) throw new RuntimeException();
+            }catch (RuntimeException e){
+                System.out.println("Такой продукт уже имеется в корзине");
+            }
+            products.add(product);
+        }
+        public void removeFromBasket(String name){
+            products.removeIf(product -> product.getName().equals(name));
+        }
+        @Override
+        public String toString() {
+            return products + "";
+        }
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            FoodBasket that = (FoodBasket) o;
+            return Objects.equals(products, that.products);
+        }
+        @Override
+        public int hashCode() {
+            return Objects.hash(products);
+        }
     }
-    public static void add(String buyer){
-
-        if(buyers1.size() < 5) buyers1.offer(buyer);
-        else if(buyers2.size() < 5) buyers2.offer(buyer);
-        else
-        try {
-        throw new RuntimeException("Очереди слишком длинные. Вызываем Галину!");
-        }catch (RuntimeException e){
-            if(buyers3.size() < 5) buyers3.offer(buyer);
-            else
+    public static class Recipe{
+        private Double sum;
+        private String name;
+        private final HashSet<Product> products;
+        protected Recipe(String name, Double sum, Product... products){
+            this.products = new HashSet<>();
+            setSum(0.0);
+            for (Product product : products) {
+                setSum(getSum() + product.getCost());
+                this.products.add(product);
+            }
+        }
+        public String getName() {
+            return name;
+        }
+        private void setName(String name) {
+            if(name == null || name.isEmpty()) throw new RuntimeException(); else  this.name = name;
+        }
+        public Double getSum() {
+            return sum;
+        }
+        private void setSum(Double sum) {
+            this.sum = sum;
+        }
+        @Override
+        public String toString() {
+            return "Название " + name + " сумма покупки " + sum + " список продуктов" + products;
+        }
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Recipe recipe = (Recipe) o;
+            return Objects.equals(sum, recipe.sum) && Objects.equals(name, recipe.name) && Objects.equals(products, recipe.products);
+        }
+        @Override
+        public int hashCode() {
+            return Objects.hash(sum, name, products);
+        }
+    }
+    public static class BookForRecipes{
+        private final HashSet<Recipe> bookForRecipes;
+        public BookForRecipes(){
+            this.bookForRecipes = new HashSet<>();
+        }
+        public void addRecipe(Recipe recipe){
+            for(Recipe recipe1: bookForRecipes){
                 try {
-                    throw e;
-                }catch (RuntimeException t){
-                    System.out.println("Место в магазине закончилось. Подождите на улице");
+                    if(recipe.getName().equals(recipe1.getName())) throw new RuntimeException();
+                }catch (RuntimeException e){
+                    System.out.println("Такой рецепт уже существует в книге");
                 }
+            }
+            bookForRecipes.add(recipe);
         }
-    }
-    public static void showAllQueues(){
-        System.out.println("Очередь 1");
-        System.out.println(buyers1);
-        System.out.println("Очередь 2");
-        System.out.println(buyers2);
-        System.out.println("Очередь 3");
-        System.out.println(buyers3);
+
+        @Override
+        public String toString() {
+            return bookForRecipes + "";
+        }
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            BookForRecipes that = (BookForRecipes) o;
+            return Objects.equals(bookForRecipes, that.bookForRecipes);
+        }
+        @Override
+        public int hashCode() {
+            return Objects.hash(bookForRecipes);
+        }
     }
     public static void main(String[] args) {
-        add1("Петровна");
-        add1("Семеновна");
-        add1("Блондинка");
-        add1("Алкаш");
-        add1("Задрот");
-        add1("Корешок");
-        add1("Чебурашка");
-        add1("Крокодил");
-        add1("Гена");
-        add1("Шапокляк");
-        add1("Голубой");
-        add1("Вертолет");
-        add1("Пионер");
-        add1("Макулатура");
-        add1("Комсомолец");
-        add1("Это уже лишний");
-        showAllQueues();
+
     }
 }

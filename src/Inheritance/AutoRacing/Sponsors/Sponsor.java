@@ -1,8 +1,7 @@
 package Inheritance.AutoRacing.Sponsors;
-
 import Inheritance.AutoRacing.Transport.Transport;
-
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Objects;
 
 public class Sponsor {
@@ -24,14 +23,14 @@ public class Sponsor {
     private String name;
     private double sum;
     private TypeOfSponsors type;
-    private final ArrayList<Transport> vehicles;
+    private final HashSet<Transport> vehicles;
     public Sponsor(String name, String type) {
         setName(name);
         setType(type);
-        this.vehicles = new ArrayList<>();
+        this.vehicles = new HashSet<>();
     }
     public void letsSponsoring(Double sum){
-            setSum(sum);
+        setSum(sum);
     }
     public void addVehicle(Transport transport){
         vehicles.add(transport);

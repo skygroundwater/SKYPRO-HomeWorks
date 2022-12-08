@@ -63,5 +63,6 @@ public class Traffic {
         serviceStation.add(truck1);
         serviceStation.add(truck2);
         serviceStation.maintenance();
+
     }
 }

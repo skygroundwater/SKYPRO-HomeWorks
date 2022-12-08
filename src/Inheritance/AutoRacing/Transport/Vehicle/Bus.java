@@ -6,6 +6,7 @@ import Inheritance.AutoRacing.Sponsors.Sponsor;
 import Inheritance.AutoRacing.Transport.Transport;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Objects;
 
 public class Bus extends Transport {
@@ -70,14 +71,14 @@ public class Bus extends Transport {
     }
     private SeatCapacity seatCapacity;
     private final DriverD driver;
-    private final ArrayList<Sponsor> sponsors;
-    private final ArrayList<Mechanic<? super Bus>> mechanics;
+    private final HashSet<Sponsor> sponsors;
+    private final HashSet<Mechanic<? super Bus>> mechanics;
     public Bus(String brand, String model, double engineVolume, int seatCapacity, String driverName, double experienceDriver) {
         super(brand, model, engineVolume);
         setSeatCapacity(seatCapacity);
         this.driver = new DriverD(driverName, experienceDriver, " права категории D ");
-        this.sponsors = new ArrayList<>();
-        this.mechanics = new ArrayList<>();
+        this.sponsors = new HashSet<>();
+        this.mechanics = new HashSet<>();
     }
     public void addSponsor(Sponsor sponsor, Double sum){
         Sponsor sponsor1 = new Sponsor(sponsor.getName(), sponsor.getType());
@@ -104,7 +105,7 @@ public class Bus extends Transport {
             System.out.println(mechanic);
         }
     }
-    public ArrayList<Mechanic<? super Bus>> getMechanics(){
+    public HashSet<Mechanic<? super Bus>> getMechanics(){
         return mechanics;
     }
     public DriverD getDriver() {
@@ -129,7 +130,6 @@ public class Bus extends Transport {
         if(seatCapacity != null) return seatCapacity.toString();
         else return "Данных по транспортному средству не достаточно";
     }
-
     public String passTechnicalMaintenance(){
         return "Автобус " + getBrand() + " в диагностике не нуждается";
     }

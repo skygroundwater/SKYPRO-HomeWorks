@@ -1,7 +1,5 @@
 package Inheritance.AutoRacing.Driver;
-
 import java.util.Objects;
-
 public abstract class Driver{
     private String name;
     private String driverCard;

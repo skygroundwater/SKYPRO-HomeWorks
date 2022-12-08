@@ -2,18 +2,19 @@ package Inheritance.AutoRacing.Mechanic;
 import Inheritance.AutoRacing.Transport.Transport;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Objects;
 public class Mechanic<T extends Transport> {
     private String firstName;
     private String lastName;
     private String company;
     private T vehicle;
-    private final ArrayList<T> vehicles;
+    private final HashSet<T> vehicles;
     public Mechanic(String firstName, String lastName, String company){
         setFirstName(firstName);
         setLastName(lastName);
         setCompany(company);
-        this.vehicles = new ArrayList<>();
+        this.vehicles = new HashSet<>();
     }
     public void takeVehicle(T vehicle){
         vehicles.add(vehicle);

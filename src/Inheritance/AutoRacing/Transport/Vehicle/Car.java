@@ -6,6 +6,7 @@ import Inheritance.AutoRacing.Sponsors.Sponsor;
 import Inheritance.AutoRacing.Transport.Transport;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Objects;
 public class Car extends Transport {
     public enum CarBody {
@@ -53,14 +54,14 @@ public class Car extends Transport {
     }
     private CarBody carBody;
     private final DriverB driver;
-    private final ArrayList<Sponsor> sponsors;
-    private final ArrayList<Mechanic<? super Car>> mechanics;
+    private final HashSet<Sponsor> sponsors;
+    private final HashSet<Mechanic<? super Car>> mechanics;
     public Car(String brand, String model, double engineVolume, String carBody, String driverName, double experienceDriver){
         super(brand, model, engineVolume);
         this.driver = new DriverB(driverName, experienceDriver, " права категории В ");
         setCarBody(carBody);
-        this.sponsors = new ArrayList<>();
-        this.mechanics = new ArrayList<>();
+        this.sponsors = new HashSet<>();
+        this.mechanics = new HashSet<>();
     }
     public void addSponsor(Sponsor sponsor, Double sum){
         Sponsor sponsor1 = new Sponsor(sponsor.getName(), sponsor.getType());
@@ -87,7 +88,7 @@ public class Car extends Transport {
             System.out.println(mechanic);
         }
     }
-    public ArrayList<Mechanic<? super Car>> getMechanics(){
+    public HashSet<Mechanic<? super Car>> getMechanics(){
         return mechanics;
     }
     public DriverB getDriver() {
