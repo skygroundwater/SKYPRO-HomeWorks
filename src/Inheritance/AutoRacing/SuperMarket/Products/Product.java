@@ -4,11 +4,13 @@ public class Product {
     private String name;
     private Double weight;
     private Double cost;
-    public Product(String name, Double weight, Double cost){
+    private Integer count;
+    public Product(String name, Double weight, Double cost, Integer count){
         try {
             setName(name);
             setCost(cost);
             setWeight(weight);
+            setCount(count);
         }catch (RuntimeException e){
             System.out.println("Заполните карточку товара полностью");
         }
@@ -22,6 +24,12 @@ public class Product {
     public void setWeight(Double weight) {
         if(weight == null) throw new RuntimeException(); else this.weight = weight;
     }
+    public void setCount(Integer count) {
+        if(count == null) this.count = 1; else this.count = count;
+    }
+    public Integer getCount() {
+        return count;
+    }
     public Double getCost() {
         return cost;
     }
@@ -33,7 +41,7 @@ public class Product {
     }
     @Override
     public String toString() {
-        return name + " вес " +  weight + " цена " + cost + " рублей";
+        return name + " вес " +  weight + " цена " + cost + " рублей. Количество ";
     }
     @Override
     public boolean equals(Object o) {

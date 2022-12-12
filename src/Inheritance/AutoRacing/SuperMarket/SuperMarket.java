@@ -1,16 +1,14 @@
 package Inheritance.AutoRacing.SuperMarket;
 import Inheritance.AutoRacing.SuperMarket.Products.Product;
-
 import java.util.*;
-
 public class SuperMarket {
     public static class FoodBasket{
         private final HashSet<Product> products;
         protected FoodBasket(){
             this.products = new HashSet<>();
         }
-        public void addNewProduct(String name, Double weight, Double cost){
-            Product product = new Product(name, weight, cost);
+        public void addNewProduct(String name, Double weight, Double cost, Integer count){
+            Product product = new Product(name, weight, cost, count);
             try {
                 if (products.contains(product)) throw new RuntimeException();
             }catch (RuntimeException e){
@@ -40,13 +38,13 @@ public class SuperMarket {
     public static class Recipe{
         private Double sum;
         private String name;
-        private final HashSet<Product> products;
+        private final HashMap<Product, Integer> products;
         protected Recipe(String name, Double sum, Product... products){
-            this.products = new HashSet<>();
+            this.products = new HashMap<>();
             setSum(0.0);
             for (Product product : products) {
-                setSum(getSum() + product.getCost());
-                this.products.add(product);
+                setSum((getSum() + product.getCost()) * product.getCount());
+                this.products.put(product, product.getCount());
             }
         }
         public String getName() {
@@ -92,7 +90,6 @@ public class SuperMarket {
             }
             bookForRecipes.add(recipe);
         }
-
         @Override
         public String toString() {
             return bookForRecipes + "";
